@@ -1,4 +1,4 @@
-package com.dmitryboz.action;
+package com.dmitryboz.actions;
 
 import com.dmitryboz.Coordinates;
 import com.dmitryboz.Map;
@@ -13,8 +13,12 @@ import java.util.Random;
 
 public class FillAndPopulateAction extends Action {
 
+    public FillAndPopulateAction(final Map map) {
+        super(map);
+    }
+
     @Override
-    public void perform(Map map){
+    public void perform(){
         Random rand = new Random(47);
         int width = map.getWidth();
         int height = map.getHeight();

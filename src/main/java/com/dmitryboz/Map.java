@@ -23,9 +23,13 @@ public class Map {
     public Map(int width, int height) {
         this.width = width;
         this.height = height;
-        entities = new HashMap<>(width * height, 2);
+
         //loadfactor 2, так как более чем на 100% HM заполнена не будет и увеличение её не потребуется,
         //размер HM всегда будет соответствовать initialCapacity
+        entities = new HashMap<>(width * height, 2);
+
+
+        emptyCells=new HashSet(width * height,2);
     }
 
     public int getHeight() {
@@ -44,7 +48,9 @@ public class Map {
         entity.setCoordinates(coordinates);
         entities.put(coordinates, entity);
         entitiesCounter.merge(entity.getClass().getSimpleName(), 1, Integer::sum);
-        emptyCells.remove(coordinates);
+        if(emptyCells.contains(coordinates)){
+            emptyCells.remove(coordinates);
+        }
     }
 
     public Entity getEntity(Coordinates coordinates) {
@@ -58,12 +64,24 @@ public class Map {
         emptyCells.add(coordinates);
     }
 
+    public void moveEntity(Entity entity, Coordinates coordTo) {
+        Coordinates coordFrom = entity.getCoordinates();
+
+        entity.setCoordinates(coordTo);
+        entities.put(coordFrom, null);
+        entities.put(coordTo, entity);
+        emptyCells.remove(coordTo);
+        emptyCells.add(coordFrom);
+    }
+
+
     /**
      * Использовать только для первичной установки пустых ячеек при инииализаци карты
      *
      * @param coordinates
      */
     public void setEmptyCell(Coordinates coordinates) {
+        entities.put(coordinates, null);
         emptyCells.add(coordinates);
     }
 

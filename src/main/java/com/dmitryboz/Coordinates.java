@@ -1,8 +1,8 @@
 package com.dmitryboz;
 
 public final class Coordinates {
-    public final int x;
-    public final int y;
+    private final int x;
+    private final int y;
 
     public Coordinates(int x, int y) {
         this.x = x;
@@ -25,5 +25,18 @@ public final class Coordinates {
         int result = x;
         result = 997 * result + y;
         return result;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public String toString() {
+        return "["+x+", "+y+"]";
     }
 }

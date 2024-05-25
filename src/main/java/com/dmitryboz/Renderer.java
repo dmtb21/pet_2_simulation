@@ -14,8 +14,17 @@ public class Renderer {
 
         Entity current;
         System.out.println();
+
+        StringBuilder sb = new StringBuilder("|\t");
+        for (int x = 0; x < width; x++) {
+            sb.append(x);
+            sb.append("\t");
+        }
+        sb.append("|");
+        System.out.println(sb);
+
         for (int y = 0; y < height; y++) {
-            StringBuilder sb = new StringBuilder("|\t");
+            sb = new StringBuilder("|\t");
             for (int x = 0; x < width; x++) {
                 current = map.getEntity(new Coordinates(x, y));
                 if (current == null) {
@@ -26,6 +35,7 @@ public class Renderer {
                 }
             }
             sb.append("|");
+            sb.append(y);
             System.out.println(sb);
         }
         System.out.println();
@@ -47,7 +57,7 @@ public class Renderer {
 
             if(operatingSystem.contains("Windows")){
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-                Process startProcess = pb.inheritIO().start();
+                Process startProcess = pb.inheritIO() .start();
                 startProcess.waitFor();
             } else {
                 ProcessBuilder pb = new ProcessBuilder("clear");
