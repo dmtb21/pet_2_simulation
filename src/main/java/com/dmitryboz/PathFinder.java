@@ -79,6 +79,7 @@ public class PathFinder {
         } while (!isTargetFound && !queue.isEmpty());
 
 
+        
 
         if(queue.isEmpty()){
             return path;//путь не найден, возвращаем пустой путь
