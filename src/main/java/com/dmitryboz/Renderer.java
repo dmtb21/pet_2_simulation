@@ -52,12 +52,12 @@ public class Renderer {
     }
 
     public static void clearConsole() {
-        try{
+        try {
             String operatingSystem = System.getProperty("os.name"); //Check the current operating system
 
-            if(operatingSystem.contains("Windows")){
+            if (operatingSystem.contains("Windows")) {
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-                Process startProcess = pb.inheritIO() .start();
+                Process startProcess = pb.inheritIO().start();
                 startProcess.waitFor();
             } else {
                 ProcessBuilder pb = new ProcessBuilder("clear");
@@ -65,7 +65,7 @@ public class Renderer {
 
                 startProcess.waitFor();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

@@ -18,7 +18,7 @@ public class FillAndPopulateAction extends Action {
     }
 
     @Override
-    public void perform(){
+    public void perform() {
         Random rand = new Random(47);
         int width = map.getWidth();
         int height = map.getHeight();
@@ -28,27 +28,27 @@ public class FillAndPopulateAction extends Action {
                 Coordinates currentCoord = new Coordinates(x, y);
                 switch (rand.nextInt(70)) {
                     case 0:
-                        //nothing, empty cell
-                        map.setEmptyCell(currentCoord);
-                        break;
                     case 1:
-                    case 2:
                         map.setEntity(currentCoord, new Rabbit(currentCoord, CreaturesNamesGenerator.getName()));
                         break;
-                    case 3:
+                    case 2:
                         map.setEntity(currentCoord, new Wolf(currentCoord, CreaturesNamesGenerator.getName()));
                         break;
-                    case 4:
+                    case 3:
                         map.setEntity(currentCoord, new Tree(currentCoord));
                         break;
-                    case 5:
+                    case 4:
                         map.setEntity(currentCoord, new Rock(currentCoord));
                         break;
+                    case 5:
                     case 6:
                     case 7:
                     case 8:
-                    case 9:
                         map.setEntity(currentCoord, new Grass(currentCoord));
+                        break;
+                    default:
+                        //nothing, empty cell
+                        map.setEmptyCell(currentCoord);
                         break;
                 }
 

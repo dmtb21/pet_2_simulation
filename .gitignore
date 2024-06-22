@@ -24,8 +24,6 @@ buildNumber.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/maven
 
-
-
 # Compiled class file
 *.class
 
@@ -49,3 +47,8 @@ buildNumber.properties
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+
+dist/
+out/

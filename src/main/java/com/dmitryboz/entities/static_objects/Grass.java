@@ -16,12 +16,15 @@ public class Grass extends StaticObject implements EdibleToHerbivores {
         this.healPower = healPower;
     }
 
-    public float getHealPower(){
+    public float getHealPower() {
         return healPower;
-    };
+    }
+
+    ;
 
     @Override
     public String getRenderIcon() {
         return "\uD83C\uDF31";
     }
+
 }

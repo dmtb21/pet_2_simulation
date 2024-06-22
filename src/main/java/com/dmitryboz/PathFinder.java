@@ -1,33 +1,22 @@
 package com.dmitryboz;
 
-import static com.dmitryboz.Directions.*;
-
-import com.dmitryboz.entities.CreaturesNamesGenerator;
-import com.dmitryboz.entities.Entity;
-import com.dmitryboz.entities.creatures.Herbivore;
-import com.dmitryboz.entities.creatures.Rabbit;
-import com.dmitryboz.entities.creatures.Wolf;
-import com.dmitryboz.entities.static_objects.Grass;
-import com.dmitryboz.entities.static_objects.Rock;
-
 import java.util.*;
 
+import static com.dmitryboz.Directions.*;
 
 public class PathFinder {
-    static List<Coordinates> getPath(Map map, Coordinates srcCoord, Class targetElClass) throws InterruptedException {
+    public static List<Coordinates> getPath(Map map, Coordinates srcCoord, Class targetElClass) {
 
         int mapWidth = map.getWidth();
         int mapHeight = map.getHeight();
 
-
-        HashMap<Coordinates, Entity> mapEntities = map.getEntities();
         Queue<Coordinates> queue = new LinkedList<Coordinates>();
         //Помеченные вершины в качестве ключа и точки откуда пришел в качестве значения
         HashMap<Coordinates, Coordinates> marked = new HashMap<Coordinates, Coordinates>(mapWidth * mapHeight, 2);
         boolean isTargetFound = false;
 
         Coordinates currentCheckPoint = srcCoord;
-        Coordinates sibling;
+        Coordinates siblingCoordinates;
         List<Coordinates> path = new ArrayList<Coordinates>();
 
         Directions nextLvlDirection = TOP;
@@ -41,20 +30,18 @@ public class PathFinder {
                 currentCheckPoint = queue.poll();
                 allSiblingsChecked = false;//сбрасываем флаг что всё проверено
             }
-            sibling = getNextCoord(currentCheckPoint, nextLvlDirection);
-            System.out.println("check "+sibling);
+            siblingCoordinates = getNextCoord(currentCheckPoint, nextLvlDirection);
 
-            if (mapEntities.containsKey(sibling) && !marked.containsKey(sibling)) {//такая точка есть на карте и ещё не помечена
-                if (mapEntities.get(sibling) != null) {//ячейка не пуста, пройти в неё нельзя
-                    if (targetElClass.isInstance(mapEntities.get(sibling))) {//является искомым объектом
+            if (map.containsCoordinates(siblingCoordinates) && !marked.containsKey(siblingCoordinates)) {//такая точка есть на карте и ещё не помечена
+                if (map.getEntity(siblingCoordinates) != null) {//ячейка не пуста, пройти в неё нельзя
+                    if (targetElClass.isInstance(map.getEntity(siblingCoordinates))) {//является искомым объектом
                         isTargetFound = true;
-                        marked.put(sibling, currentCheckPoint);
-                        currentCheckPoint=sibling;
-                        System.out.println(isTargetFound);
+                        marked.put(siblingCoordinates, currentCheckPoint);
+                        currentCheckPoint = siblingCoordinates;
                     }
                 } else {//ячейка пуста. Помечаем и добавляем в очередь
-                    marked.put(sibling, currentCheckPoint);
-                    queue.add(sibling);
+                    marked.put(siblingCoordinates, currentCheckPoint);
+                    queue.add(siblingCoordinates);
                 }
             }
 
@@ -74,14 +61,9 @@ public class PathFinder {
                     allSiblingsChecked = true;
                     break;
             }
+        } while (!isTargetFound && (!queue.isEmpty() || !allSiblingsChecked));
 
-            //Thread.sleep(100);
-        } while (!isTargetFound && !queue.isEmpty());
-
-
-        
-
-        if(queue.isEmpty()){
+        if (!isTargetFound) {
             return path;//путь не найден, возвращаем пустой путь
         }
 
@@ -91,18 +73,30 @@ public class PathFinder {
         }
 
         Collections.reverse(path);//инвертируем обратный путь
-
-
-
+/*
         System.out.println(queue);
         System.out.println(marked);
         RenderPathFinder(map, srcCoord,  queue, marked,path);
-
-
+*/
         return path;
     }
 
-    //функция для отладки getPath()
+    private static Coordinates getNextCoord(Coordinates current, Directions direction) {
+        switch (direction) {
+            case TOP:
+                return new Coordinates(current.getX(), current.getY() - 1);
+            case BOTTOM:
+                return new Coordinates(current.getX(), current.getY() + 1);
+            case LEFT:
+                return new Coordinates(current.getX() - 1, current.getY());
+            case RIGHT:
+                return new Coordinates(current.getX() + 1, current.getY());
+        }
+        throw new RuntimeException("Invalid direction");
+    }
+
+/*
+    //функции для отладки getPath()
     private static void RenderPathFinder(Map map, Coordinates srcCoord, Queue<Coordinates> queue, HashMap<Coordinates, Coordinates> marked, List<Coordinates> path) {
          int width = map.getWidth();
         int height = map.getHeight();
@@ -158,23 +152,7 @@ public class PathFinder {
         }
         System.out.println();
 
-
     }
-
-    private static Coordinates getNextCoord(Coordinates current, Directions direction) {
-        switch (direction) {
-            case TOP:
-                return new Coordinates(current.getX(), current.getY() - 1);
-            case BOTTOM:
-                return new Coordinates(current.getX(), current.getY() + 1);
-            case LEFT:
-                return new Coordinates(current.getX() - 1, current.getY());
-            case RIGHT:
-                return new Coordinates(current.getX() + 1, current.getY());
-        }
-        throw new RuntimeException("Invalid direction");
-    }
-
 
     public static void main(String[] args) throws InterruptedException {
         Map map = new Map(20, 15);
@@ -188,7 +166,6 @@ public class PathFinder {
 
             }
         }
-
 
         Coordinates srcPoint = new Coordinates(10,7);
         Coordinates target2Point = new Coordinates(19,0);
@@ -206,31 +183,5 @@ public class PathFinder {
         List path=getPath(map, srcPoint, Herbivore.class);
         System.out.println(path);
 
-    }
+    }*/
 }
-
-
-/*
-    Поиск в ширину работает путём последовательного просмотра отдельных уровней графа, начиная с узла-источника
-        �
-        {\displaystyle u}.
-
-        Рассмотрим все рёбра
-        (
-        �
-        ,
-        �
-        )
-        {\displaystyle (u,v)}, выходящие из узла
-        �
-        {\displaystyle u}. Если очередной узел
-        �
-        {\displaystyle v} является целевым узлом, то поиск завершается; в противном случае узел
-        �
-        {\displaystyle v} добавляется в очередь. После того, как будут проверены все рёбра, выходящие из узла
-        �
-        {\displaystyle u}, из очереди извлекается следующий узел
-        �
-        {\displaystyle u}, и процесс повторяется.
-
-        Неформальное описание*/

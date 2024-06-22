@@ -27,6 +27,11 @@ public final class Coordinates {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "[" + x + ", " + y + "]";
+    }
+
     public int getX() {
         return x;
     }
@@ -35,8 +40,13 @@ public final class Coordinates {
         return y;
     }
 
-    @Override
-    public String toString() {
-        return "["+x+", "+y+"]";
+    public boolean isSibling(Coordinates otherCoord) {
+        return isSibling(otherCoord, 1);
+    }
+
+    public boolean isSibling(Coordinates otherCoord, int maxDistance) {
+        int absX = Math.abs(otherCoord.x - this.x);
+        int absY = Math.abs(otherCoord.y - this.y);
+        return (absX <= maxDistance && absY == 0 || absX == 0 && absY <= maxDistance);
     }
 }

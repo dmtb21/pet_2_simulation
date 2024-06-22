@@ -1,3 +1,4 @@
 package com.dmitryboz.entities;
 
-public interface EdibleToPredators extends Edible{}
+public interface EdibleToPredators extends Edible {
+}

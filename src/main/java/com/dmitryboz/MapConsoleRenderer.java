@@ -1,7 +1,5 @@
 package com.dmitryboz;
 
-import com.dmitryboz.entities.Entity;
-
 public class MapConsoleRenderer {
 
 /*

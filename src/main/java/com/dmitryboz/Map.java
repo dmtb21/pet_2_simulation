@@ -1,13 +1,9 @@
 package com.dmitryboz;
 
-import com.dmitryboz.entities.*;
-import com.dmitryboz.entities.creatures.*;
-import com.dmitryboz.entities.static_objects.*;
+import com.dmitryboz.entities.Entity;
+import com.dmitryboz.entities.creatures.Creature;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 public class Map {
     private final int width;
@@ -28,8 +24,7 @@ public class Map {
         //размер HM всегда будет соответствовать initialCapacity
         entities = new HashMap<>(width * height, 2);
 
-
-        emptyCells=new HashSet(width * height,2);
+        emptyCells = new HashSet<>(width * height, 2);
     }
 
     public int getHeight() {
@@ -40,15 +35,23 @@ public class Map {
         return width;
     }
 
-    public HashMap<Coordinates, Entity> getEntities() {
-        return entities;
+    public List<Creature> getCreaturesList() {
+        List<Creature> creaturesList = new ArrayList<Creature>();
+
+        //Создадим независимый от hashmap список Creatures
+        for (Entity entity : entities.values()) {
+            if (entity instanceof Creature) {
+                creaturesList.add((Creature) entity);
+            }
+        }
+        return creaturesList;
     }
 
     public void setEntity(Coordinates coordinates, Entity entity) {
         entity.setCoordinates(coordinates);
         entities.put(coordinates, entity);
         entitiesCounter.merge(entity.getClass().getSimpleName(), 1, Integer::sum);
-        if(emptyCells.contains(coordinates)){
+        if (emptyCells.contains(coordinates)) {
             emptyCells.remove(coordinates);
         }
     }
@@ -57,7 +60,15 @@ public class Map {
         return entities.get(coordinates);
     }
 
-    public void removeEntity(Coordinates coordinates, Entity entity) {
+    public boolean containsCoordinates(Coordinates coord) {
+        return entities.containsKey(coord);
+    }
+
+    public void removeEntity(Entity entity) {
+        Coordinates coordinates = entity.getCoordinates();
+        if (entities.get(coordinates) != entity) {
+            throw new RuntimeException("Ошибка. Попытка удалить объект, которого нет");
+        }
         entity.setCoordinates(null);
         entities.put(coordinates, null);
         entitiesCounter.put(entity.getClass().getSimpleName(), entitiesCounter.get(entity.getClass().getSimpleName()) - 1);
@@ -67,13 +78,19 @@ public class Map {
     public void moveEntity(Entity entity, Coordinates coordTo) {
         Coordinates coordFrom = entity.getCoordinates();
 
+        if (entities.get(coordFrom) != entity) {
+            throw new RuntimeException("Ошибка. Попытка передвинуть объект, которого нет");
+        }
+        if (entities.get(coordTo) != null) {
+            throw new RuntimeException("Ошибка. Попытка передвинуть объект на занятую ячейку");
+        }
+
         entity.setCoordinates(coordTo);
         entities.put(coordFrom, null);
         entities.put(coordTo, entity);
         emptyCells.remove(coordTo);
         emptyCells.add(coordFrom);
     }
-
 
     /**
      * Использовать только для первичной установки пустых ячеек при инииализаци карты
@@ -89,9 +106,12 @@ public class Map {
         return entities.get(coordinates) == null;
     }
 
-
     public boolean hasEmptyCells() {
         return !emptyCells.isEmpty();
+    }
+
+    public int getEmptyCellsCount() {
+        return emptyCells.size();
     }
 
     public Coordinates getRandomEmptyCoord() throws IllegalStateException {
@@ -108,7 +128,6 @@ public class Map {
         }
         throw new IllegalStateException("Has no empty cell");
     }
-
 
     public HashMap<String, Integer> getPopulationData() {
         return new HashMap<String, Integer>(entitiesCounter);

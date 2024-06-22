@@ -1,27 +1,39 @@
 package com.dmitryboz.actions;
 
 import com.dmitryboz.Map;
+import com.dmitryboz.Simulation;
+import com.dmitryboz.entities.creatures.Creature;
+
+import java.util.List;
 
 public class TurnCreaturesAction extends Action {
+    private final Simulation simulation;
 
-    public TurnCreaturesAction(final Map map) {
+    public TurnCreaturesAction(final Map map, final Simulation simulation) {
         super(map);
+        this.simulation = simulation;
     }
 
     @Override
-    public void perform(){
-       /* HashMap<Coordinates, Entity> entities=map.getEntities();
+    public void perform() {
+        // HashMap<Coordinates, Entity> entities = map.getEntities();
+        //получим список существ
+        List<Creature> creaturesList = map.getCreaturesList();
 
-        for (int i = 0; i < map.getWorld().size(); i++) {
-            if (worldMap.getEntity(i) instanceof Creature)
-                ((Creature) worldMap.getEntity(i)).setAlreadyMove(false);
-        }
-        for (int i = 0; i < map.getWorld().size(); i++) {
-            if (worldMap.getEntity(i) instanceof Creature &&
-                    !((Creature) worldMap.getEntity(i)).isAlreadyMove()) {
-                ((Creature) worldMap.getEntity(i)).setAlreadyMove(true);
-                ((Creature) worldMap.getEntity(i)).makeMove(worldMap);
+        //System.out.println("creaturesList " +creaturesList);
+
+        boolean movesAvailable = false;
+        for (Creature creature : creaturesList) {
+            if (creature.isAlive()) {//если существо ещё живо после ходов предыдущих существ, то выполним ход
+                //System.out.println(creature+ " makeMove");
+                if (creature.makeMove(map) && !movesAvailable) {
+                    movesAvailable = true;
+                }
             }
-        }*/
+
+        }
+        if (!movesAvailable) {
+            simulation.setEndOfUniverse();
+        }
     }
 }
