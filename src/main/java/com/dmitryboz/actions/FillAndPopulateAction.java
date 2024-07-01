@@ -1,7 +1,7 @@
 package com.dmitryboz.actions;
 
 import com.dmitryboz.Coordinates;
-import com.dmitryboz.Map;
+import com.dmitryboz.SimMap;
 import com.dmitryboz.entities.CreaturesNamesGenerator;
 import com.dmitryboz.entities.creatures.Rabbit;
 import com.dmitryboz.entities.creatures.Wolf;
@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class FillAndPopulateAction extends Action {
 
-    public FillAndPopulateAction(final Map map) {
+    public FillAndPopulateAction(final SimMap map) {
         super(map);
     }
 
@@ -47,7 +47,6 @@ public class FillAndPopulateAction extends Action {
                         map.setEntity(currentCoord, new Grass(currentCoord));
                         break;
                     default:
-                        //nothing, empty cell
                         map.setEmptyCell(currentCoord);
                         break;
                 }

@@ -52,3 +52,4 @@ hs_err_pid*
 
 dist/
 out/
+selfCheck.txt

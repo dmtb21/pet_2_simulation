@@ -20,8 +20,6 @@ public class Grass extends StaticObject implements EdibleToHerbivores {
         return healPower;
     }
 
-    ;
-
     @Override
     public String getRenderIcon() {
         return "\uD83C\uDF31";

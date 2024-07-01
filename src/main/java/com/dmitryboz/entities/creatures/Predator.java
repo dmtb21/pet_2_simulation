@@ -1,7 +1,7 @@
 package com.dmitryboz.entities.creatures;
 
 import com.dmitryboz.Coordinates;
-import com.dmitryboz.Map;
+import com.dmitryboz.SimMap;
 import com.dmitryboz.PathFinder;
 import com.dmitryboz.entities.EdibleToPredators;
 import com.dmitryboz.entities.Entity;
@@ -19,7 +19,7 @@ public abstract class Predator extends Creature {
     }
 
     @Override
-    public boolean makeMove(Map map) {
+    public boolean makeMove(SimMap map) {
         List<Coordinates> path = PathFinder.getPath(map, this.coordinates, Herbivore.class);
         if (!path.isEmpty()) {//путь найден
             Coordinates targetCoordinates = path.get(path.size() - 1);

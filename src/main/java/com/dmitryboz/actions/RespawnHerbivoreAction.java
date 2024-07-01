@@ -1,7 +1,7 @@
 package com.dmitryboz.actions;
 
 import com.dmitryboz.Coordinates;
-import com.dmitryboz.Map;
+import com.dmitryboz.SimMap;
 import com.dmitryboz.entities.CreaturesNamesGenerator;
 import com.dmitryboz.entities.Entity;
 import com.dmitryboz.entities.creatures.Rabbit;
@@ -11,7 +11,7 @@ import java.util.Random;
 public class RespawnHerbivoreAction extends RespawnAction {
     private Random rand = new Random(47);
 
-    public RespawnHerbivoreAction(final Map map) {
+    public RespawnHerbivoreAction(final SimMap map) {
         super(map);
     }
 

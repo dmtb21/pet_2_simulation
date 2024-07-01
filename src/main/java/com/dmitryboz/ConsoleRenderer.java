@@ -2,13 +2,14 @@ package com.dmitryboz;
 
 import com.dmitryboz.entities.Entity;
 
-import java.util.HashMap;
+import java.util.Map;
 
-public class Renderer {
-    private Renderer() {
+public class ConsoleRenderer {
+    private ConsoleRenderer() {
+        throw new UnsupportedOperationException();
     }
 
-    public static void renderMap(Map map) {
+    public static void renderMap(SimMap map) {
         int width = map.getWidth();
         int height = map.getHeight();
 
@@ -42,9 +43,9 @@ public class Renderer {
 
     }
 
-    public static void printPopulation(Map map) {
+    public static void printPopulation(SimMap map) {
         System.out.println("Population:");
-        HashMap<String, Integer> pupulationData = map.getPopulationData();
+        Map<String, Integer> pupulationData = map.getPopulationData();
 
         for (String key : pupulationData.keySet()) {
             System.out.println(key + " " + pupulationData.get(key));
@@ -53,8 +54,7 @@ public class Renderer {
 
     public static void clearConsole() {
         try {
-            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
-
+            String operatingSystem = System.getProperty("os.name");
             if (operatingSystem.contains("Windows")) {
                 ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
                 Process startProcess = pb.inheritIO().start();
@@ -62,7 +62,6 @@ public class Renderer {
             } else {
                 ProcessBuilder pb = new ProcessBuilder("clear");
                 Process startProcess = pb.inheritIO().start();
-
                 startProcess.waitFor();
             }
         } catch (Exception e) {

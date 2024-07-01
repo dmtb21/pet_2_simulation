@@ -6,38 +6,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
-
     private final List<Action> initActions;
-
     private final List<Action> turnActions;
-    private final Map map;
-    // private Scanner scanner;
+    private final SimMap map;
 
     private int stepNumber = 0;
     private boolean endOfUniverse = false;
+    private boolean isRun = false;
 
     public Simulation() throws InterruptedException {
-        map = new Map(20, 15);
-        //map = new Map(5, 5);
-        //scanner = new Scanner(System.in);
+        map = new SimMap(20, 15);
         initActions = new ArrayList<>();
         turnActions = new ArrayList<>();
 
         createActions();
         performActions(initActions);
-
-        startSimulation();
-
     }
 
-    private void startSimulation() throws InterruptedException {
-        while (true) {
-            Thread.sleep(500);
-            if (!endOfUniverse) {
-                nextTurn();
-            } else {
-                System.out.println("endOfUniverse: True ");
-                break;
+    public void start() throws InterruptedException {
+        if(!isRun){
+            endOfUniverse=false;
+            while (true) {
+                Thread.sleep(500);
+                if (!endOfUniverse) {
+                    nextTurn();
+                } else {
+                    System.out.println("endOfUniverse: True ");
+                    isRun=false;
+                    break;
+                }
             }
         }
     }
@@ -61,19 +58,10 @@ public class Simulation {
 
     private void nextTurn() {
         ++stepNumber;
-        Renderer.clearConsole();
+        ConsoleRenderer.clearConsole();
         System.out.println("Step " + stepNumber);
-        //turnActions(map);
-        Renderer.renderMap(map);
-        Renderer.printPopulation(map);
+        ConsoleRenderer.renderMap(map);
+        ConsoleRenderer.printPopulation(map);
         performActions(turnActions);
-    }
-
-    public static void main(String[] args) {
-        try {
-            Simulation simulation = new Simulation();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

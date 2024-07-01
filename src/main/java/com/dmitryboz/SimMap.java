@@ -5,18 +5,18 @@ import com.dmitryboz.entities.creatures.Creature;
 
 import java.util.*;
 
-public class Map {
+public class SimMap {
     private final int width;
     private final int height;
-    private HashMap<Coordinates, Entity> entities;
+    private Map<Coordinates, Entity> entities;
 
     /**
      * Hashset для оптимизации выборки случайной пустой ячейки
      */
-    private HashSet<Coordinates> emptyCells;
-    private HashMap<String, Integer> entitiesCounter = new HashMap<>();
+    private Set<Coordinates> emptyCells;
+    private Map<String, Integer> entitiesCounter = new HashMap<>();
 
-    public Map(int width, int height) {
+    public SimMap(int width, int height) {
         this.width = width;
         this.height = height;
 
@@ -129,7 +129,7 @@ public class Map {
         throw new IllegalStateException("Has no empty cell");
     }
 
-    public HashMap<String, Integer> getPopulationData() {
+    public Map<String, Integer> getPopulationData() {
         return new HashMap<String, Integer>(entitiesCounter);
     }
 

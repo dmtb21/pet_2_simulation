@@ -1,7 +1,7 @@
 package com.dmitryboz.entities.creatures;
 
 import com.dmitryboz.Coordinates;
-import com.dmitryboz.Map;
+import com.dmitryboz.SimMap;
 import com.dmitryboz.entities.Entity;
 
 public abstract class Creature extends Entity {
@@ -19,7 +19,7 @@ public abstract class Creature extends Entity {
         this.movementSpeed = movementSpeed;
     }
 
-    public abstract boolean makeMove(Map map);
+    public abstract boolean makeMove(SimMap map);
 
     public abstract void eat(Entity food);
 
@@ -28,14 +28,10 @@ public abstract class Creature extends Entity {
         if (HP < 0) HP = 0;
     }
 
-    ;
-
     public void heal(float healPower) {
         HP += healPower;
         if (HP > maxHP) HP = maxHP;
     }
-
-    ;
 
     public boolean isAlive() {
         return HP > 0;

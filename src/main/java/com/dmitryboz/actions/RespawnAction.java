@@ -1,12 +1,12 @@
 package com.dmitryboz.actions;
 
 import com.dmitryboz.Coordinates;
-import com.dmitryboz.Map;
+import com.dmitryboz.SimMap;
 import com.dmitryboz.entities.Entity;
 
 abstract class RespawnAction extends Action {
 
-    public RespawnAction(final Map map) {
+    public RespawnAction(final SimMap map) {
         super(map);
     }
 

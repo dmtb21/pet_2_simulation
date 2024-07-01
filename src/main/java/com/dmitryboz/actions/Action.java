@@ -1,14 +1,11 @@
 package com.dmitryboz.actions;
 
-import com.dmitryboz.Map;
+import com.dmitryboz.SimMap;
 
 public abstract class Action {
-
-    final Map map;
-
-    public Action(Map map) {
+    final SimMap map;
+    public Action(SimMap map) {
         this.map = map;
     }
-
     public abstract void perform();
 }
